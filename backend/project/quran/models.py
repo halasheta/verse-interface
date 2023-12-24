@@ -1,7 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 VERSE_LEN = 1500
-
 
 class Chapter(models.Model):
     """
@@ -19,7 +19,7 @@ class Verse(models.Model):
     """
     A verse belonging to a certain chapter in the Quran.
     """
-    chapter = models.ForeignKey(to='Chapter', related_name='quran', on_delete=models.CASCADE)
+    chapter = models.ForeignKey(to='Chapter', related_name='verses', on_delete=models.CASCADE)
     text_eng = models.CharField(max_length=VERSE_LEN)
     text_ara = models.CharField(max_length=VERSE_LEN)
 

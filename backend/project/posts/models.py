@@ -4,7 +4,6 @@ from quran.models import Verse
 
 POST_LEN = 2000
 
-
 class Post(models.Model):
     """
     A user's interpretation of a particular verse.
@@ -25,6 +24,4 @@ class Like(models.Model):
     post = models.ForeignKey(to='Post', related_name='likes', on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'User {} liked a post to {}, Verse {}'.format(self.user.username,
-                                                             self.post.verse.chapter.name_eng,
-                                                             self.post.verse.num)
+        return 'User {} liked post'.format(self.user.username, self.post.id)

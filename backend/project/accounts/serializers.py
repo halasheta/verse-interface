@@ -37,7 +37,9 @@ class SignUpSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    likes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['username', 'password', 'replies', 'likes']
-        read_only = ['likes', 'replies']
+        fields = ['id', 'username', 'password', 'posts', 'likes']

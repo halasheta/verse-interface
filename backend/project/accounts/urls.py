@@ -7,8 +7,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', SignupUserView.as_view()),
     path('profile/', UpdateUserView.as_view()),
 ]

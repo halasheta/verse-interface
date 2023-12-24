@@ -4,7 +4,7 @@ from .models import *
 
 class PostAdmin(admin.ModelAdmin):
     model = Post
-    list_display = ("user", "text")
+    list_display = ("text", "user")
 
 
 class LikeAdmin(admin.ModelAdmin):
@@ -12,5 +12,5 @@ class LikeAdmin(admin.ModelAdmin):
     list_display = ("user", "post")
 
 
-admin.site.register(Post, PostAdmin)
 admin.site.register(Like, LikeAdmin)
+admin.site.register(Post, PostAdmin)

@@ -1,0 +1,49 @@
+.verse-page {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 3rem;
+
+}
+
+.verse-card {
+    min-width: 500;
+    min-height: 100;
+}
+
+.verse-post {
+    padding: 1rem;
+}
+
+.user-post {
+    padding: 1rem;
+}
+
+.right-align-item {
+    margin-left: 85%;
+}
+
+.right-align-post {
+    /* width: 20% !important; */
+    margin: 0 auto !important;
+    display: flex !important;
+    float: right !important;
+
+}
+
+.number-input {
+    max-width: 4rem;
+    max-height: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    border: 1rem;
+    font-size: 11;
+
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
+}
