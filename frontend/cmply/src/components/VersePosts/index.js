@@ -8,7 +8,7 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import UserAPIContext from "../../contexts/UserAPIContext";
 import VersesAPIContext from "../../contexts/VersesAPIContext";
@@ -181,12 +181,12 @@ const VersePosts = ({ versePosts, userId, userSpecific = false }) => {
                             {numLikes[i]}
                             {liked[i] === 0 && (
                                 <IconButton onClick={() => likePost(i)}>
-                                    <FavoriteIcon />
+                                    <ThumbUpAltIcon />
                                 </IconButton>
                             )}
                             {liked[i] === 1 && (
                                 <IconButton onClick={() => unlikePost(i)}>
-                                    <FavoriteIcon color="primary" />
+                                    <ThumbUpAltIcon color="primary" />
                                 </IconButton>
                             )}
                         </CardActions>
