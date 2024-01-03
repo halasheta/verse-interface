@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions
-from rest_framework.generics import get_object_or_404, RetrieveUpdateAPIView, CreateAPIView
+from rest_framework.generics import get_object_or_404, RetrieveAPIView, CreateAPIView
 
 from .serializers import UserSerializer, SignUpSerializer
 
@@ -22,8 +22,8 @@ class IsSelfOrAdmin(permissions.BasePermission):
         return request.user and obj == request.user
 
 
-class UpdateUserView(RetrieveUpdateAPIView):
-    lookup_field = "email"
+class UserProfileView(RetrieveAPIView):
+    lookup_field = "username"
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsSelfOrAdmin, permissions.IsAuthenticated]
@@ -32,6 +32,3 @@ class UpdateUserView(RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, username=self.request.user.username)
         return obj
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)

@@ -6,3 +6,16 @@
     flex-wrap: wrap;
     padding: 3rem;
 }
+
+.verse-display {
+    padding: 0.5rem;
+    border-radius:500px;
+}
+
+.verse-display:hover {
+    color: primary;
+
+}
+.verse-footer {
+    padding-top: 1rem;
+}

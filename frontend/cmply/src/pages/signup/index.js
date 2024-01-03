@@ -52,7 +52,6 @@ const SignUp = () => {
                     return Promise.reject(res);
                 }
             
-                // console.log(res.json())
                 navigate('/login');
             })
             .catch(err => err.json())
@@ -101,7 +100,7 @@ const SignUp = () => {
                 Already have an account?
             </Typography>
             
-            <Link to="/login" style={{color: 'primary'}}> 
+            <Link to="/login" style={{ textDecoration: "none", color: "#D27D2D" }}> 
                 Login here!
             </Link>
         </div>
