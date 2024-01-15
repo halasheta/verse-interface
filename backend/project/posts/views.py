@@ -52,7 +52,11 @@ class LikePost(CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = LikeSerializer
 
-class UnlikePost(DestroyAPIView):
+class DislikePost(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DislikeSerializer
+
+class RemoveLike(DestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = LikeSerializer
     queryset = Like.objects.all()
@@ -61,4 +65,15 @@ class UnlikePost(DestroyAPIView):
         return get_object_or_404(Like, 
                                  user=self.request.data["user"],
                                  post=self.request.data["post"])
+    
+class RemoveDislike(DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DislikeSerializer
+    queryset = Dislike.objects.all()
+
+    def get_object(self):
+        return get_object_or_404(Dislike, 
+                                 user=self.request.data["user"],
+                                 post=self.request.data["post"])
+
 

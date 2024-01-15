@@ -6,7 +6,7 @@ POST_LEN = 2000
 
 class Post(models.Model):
     """
-    A user's interpretation of a particular verse.
+    An interpretation of a particular verse. Only admin users can create posts.
     """
     verses = models.ManyToManyField(to=Verse, related_name='posts')
     user = models.ForeignKey(to=User, related_name='posts', on_delete=models.CASCADE)  # possibly SET_NULL?
@@ -25,3 +25,13 @@ class Like(models.Model):
 
     def __str__(self):
         return 'User {} liked post'.format(self.user.username, self.post.id)
+    
+class Dislike(models.Model):
+    """
+    The "dislikes" of a user reply.
+    """
+    user = models.ForeignKey(to=User, related_name='dislikes', on_delete=models.CASCADE)
+    post = models.ForeignKey(to='Post', related_name='dislikes', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'User {} disliked post'.format(self.user.username, self.post.id)
