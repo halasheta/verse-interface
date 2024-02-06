@@ -19,7 +19,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import VersesAPIContext from "../../contexts/VersesAPIContext";
 import LoadingScreen from "../../components/LoadingScreen";
 import VersePosts from "../../components/VersePosts";
-
+export const CARD_WIDTH = 700;
 const SingleVerse = () => {
     const [post, setPost] = useState("");
     const [versePosts, setVersePosts] = useState([]);
@@ -115,7 +115,7 @@ const SingleVerse = () => {
                     <Card
                         variant="outlined"
                         sx={{
-                            width: 500,
+                            width: CARD_WIDTH,
                             border: "none",
                             boxShadow: "none",
                         }}>
@@ -152,7 +152,7 @@ const SingleVerse = () => {
                     <Card
                         variant="outlined"
                         className="verse-card"
-                        sx={{ width: 500, fontSize: 20 }}>
+                        sx={{ width: CARD_WIDTH, fontSize: 20 }}>
                         <CardContent
                             style={{
                                 fontFamily: [
@@ -167,7 +167,7 @@ const SingleVerse = () => {
                     <Card
                         variant="outlined"
                         className="verse-card"
-                        sx={{ width: 500 }}>
+                        sx={{ width: CARD_WIDTH }}>
                         <CardContent>
                             <div>
                                 {verse.current !== undefined &&
@@ -187,7 +187,7 @@ const SingleVerse = () => {
                         </Link>
                     ) : (
                         <div className="user-post">
-                            <Card sx={{ width: 500 }}>
+                            <Card sx={{ width: CARD_WIDTH }}>
                                 <CardHeader
                                     align="left"
                                     avatar={

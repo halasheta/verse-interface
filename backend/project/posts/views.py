@@ -1,16 +1,16 @@
 from rest_framework.generics import get_object_or_404, ListAPIView, RetrieveAPIView, CreateAPIView, DestroyAPIView
 
 from .serializers import *
-from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from quran.models import Verse
 from django.contrib.auth.models import User
 from accounts.views import IsSelfOrAdmin
     
-    
+# CRUD Post views
 class CreatePost(CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser, IsAuthenticated]
     serializer_class = PostSerializer
 
     def create(self, request, *args, **kwargs):
@@ -25,7 +25,7 @@ class CreatePost(CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class DeletePost(DestroyAPIView):
-    permission_classes = [IsSelfOrAdmin, IsAuthenticated]
+    permission_classes = [IsAdminUser, IsAuthenticated]
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     
@@ -47,32 +47,36 @@ class GetPostsByUser(ListAPIView):
     def get_queryset(self):
         user = User.objects.get(id=self.kwargs["id"])
         return user.posts.all()
-    
+
+
+# Post liking and disliking views
 class LikePost(CreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = LikeSerializer
+    serializer_class = PostLikeSerializer
+
 
 class DislikePost(CreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = DislikeSerializer
+    serializer_class = PostDislikeSerializer
+    
 
-class RemoveLike(DestroyAPIView):
+class RemovePostLike(DestroyAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = LikeSerializer
-    queryset = Like.objects.all()
+    serializer_class = PostLikeSerializer
+    queryset = PostLike.objects.all()
 
     def get_object(self):
-        return get_object_or_404(Like, 
+        return get_object_or_404(PostLike, 
                                  user=self.request.data["user"],
                                  post=self.request.data["post"])
     
-class RemoveDislike(DestroyAPIView):
+class RemovePostDislike(DestroyAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = DislikeSerializer
-    queryset = Dislike.objects.all()
+    serializer_class = PostDislikeSerializer
+    queryset = PostDislike.objects.all()
 
     def get_object(self):
-        return get_object_or_404(Dislike, 
+        return get_object_or_404(PostDislike, 
                                  user=self.request.data["user"],
                                  post=self.request.data["post"])
 

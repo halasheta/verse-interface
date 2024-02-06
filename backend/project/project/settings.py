@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'quran',
     'accounts',
     'posts',
+    'comments',
 ]
 
 MIDDLEWARE = [

@@ -10,9 +10,12 @@ import {
 } from "@mui/material";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ReplyIcon from "@mui/icons-material/Reply";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import UserAPIContext from "../../contexts/UserAPIContext";
 import VersesAPIContext from "../../contexts/VersesAPIContext";
+import CommentThread from "../CommentThread";
+import { CARD_WIDTH } from "../../pages/singleVerse";
 
 const VersePosts = ({ versePosts, userId, userSpecific = false }) => {
     const [liked, setLiked] = useState([]);
@@ -38,7 +41,7 @@ const VersePosts = ({ versePosts, userId, userSpecific = false }) => {
             let v2 = versePosts[i].dislikes;
             let l2 = 0;
             if (v2.find((e) => e.user === userId)) {
-                // the user already liked this post
+                // the user already disliked this post
                 l2 = 1;
             }
             setDisliked((lst) => [...lst, l2]);
@@ -188,11 +191,14 @@ const VersePosts = ({ versePosts, userId, userSpecific = false }) => {
             })
             .catch((err) => console.log(err));
     };
+
+    const addComment = (i) => {};
+
     return (
         <div className="verse-posts">
             {currPosts.map((versePost, i) => (
                 <div className="verse-post" key={"verse-post-" + i}>
-                    <Card sx={{ width: 500 }}>
+                    <Card sx={{ width: CARD_WIDTH }}>
                         <CardHeader
                             align="left"
                             avatar={
@@ -249,34 +255,45 @@ const VersePosts = ({ versePosts, userId, userSpecific = false }) => {
                                 </Typography>
                             )}
                         </CardContent>
-                        <CardActions
-                            disableSpacing
-                            className="right-align-item">
-                            {liked[i] === 0 && (
-                                <IconButton onClick={() => likePost(i)}>
-                                    <ThumbUpAltIcon />
-                                </IconButton>
-                            )}
-                            {liked[i] === 1 && (
-                                <IconButton onClick={() => removeLike(i)}>
-                                    <ThumbUpAltIcon color="primary" />
-                                </IconButton>
-                            )}
-                            {numLikes[i]}
+                        <CardActions>
+                            <div>
+                                {liked[i] === 0 && (
+                                    <IconButton onClick={() => likePost(i)}>
+                                        <ThumbUpAltIcon />
+                                    </IconButton>
+                                )}
+                                {liked[i] === 1 && (
+                                    <IconButton onClick={() => removeLike(i)}>
+                                        <ThumbUpAltIcon color="primary" />
+                                    </IconButton>
+                                )}
+                                {numLikes[i]}
 
-                            {disliked[i] === 0 && (
-                                <IconButton onClick={() => dislikePost(i)}>
-                                    <ThumbDownAltIcon />
+                                {disliked[i] === 0 && (
+                                    <IconButton onClick={() => dislikePost(i)}>
+                                        <ThumbDownAltIcon />
+                                    </IconButton>
+                                )}
+                                {disliked[i] === 1 && (
+                                    <IconButton
+                                        onClick={() => removeDislike(i)}>
+                                        <ThumbDownAltIcon color="primary" />
+                                    </IconButton>
+                                )}
+                                {numDislikes[i]}
+                                <IconButton onClick={() => addComment(i)}>
+                                    <ReplyIcon />
                                 </IconButton>
-                            )}
-                            {disliked[i] === 1 && (
-                                <IconButton onClick={() => removeDislike(i)}>
-                                    <ThumbDownAltIcon color="primary" />
-                                </IconButton>
-                            )}
-                            {numDislikes[i]}
+                            </div>
                         </CardActions>
                     </Card>
+
+                    {versePost.comments !== undefined && (
+                        <CommentThread
+                            comments={versePost.comments}
+                            setup={true}
+                        />
+                    )}
                 </div>
             ))}
         </div>
