@@ -1,0 +1,23 @@
+.card-section {
+    flex-grow: 6;
+}
+
+.avatar {
+    margin: 5px;
+}
+
+/* .icon-button {
+    height: 1rem;
+    width: 1rem;
+} */
+
+/* .avatar-section {
+    align-items: center;
+    justify-content: center; 
+} */
+
+.comment {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}

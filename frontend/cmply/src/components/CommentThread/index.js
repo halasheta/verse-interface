@@ -1,29 +1,47 @@
 import React, { useEffect, useState, useContext } from "react";
-import Avatar from "@mui/material/Avatar";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardActions,
-    IconButton,
-    Typography,
-} from "@mui/material";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
-import ReplyIcon from "@mui/icons-material/Reply";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Accordion } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
 import UserAPIContext from "../../contexts/UserAPIContext";
-import { CARD_WIDTH } from "../../pages/singleVerse";
+import "../../pages/singleVerse/singleVerse.css";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import Comment from "../Comment";
 
-const CommentThread = ({ comments, margin = 0, setup = false }) => {
-    const MARGIN = 20 + margin;
-    const { username, userId } = useContext(UserAPIContext);
+const CommentThread = ({
+    comments,
+    uLikes = [],
+    uDislikes = [],
+    nLikes = {},
+    nDislikes = {},
+    margin = 5,
+    setup = false,
+}) => {
+    const MARGIN = 10 + margin;
+    const { userId } = useContext(UserAPIContext);
 
-    const [liked, setLiked] = useState([]);
-    const [numLikes, setNumLikes] = useState([]);
-    const [disliked, setDisliked] = useState([]);
-    const [numDislikes, setNumDislikes] = useState([]);
+    const [liked, setLiked] = useState(uLikes);
+    const [numLikes, setNumLikes] = useState(nLikes);
+
+    const [disliked, setDisliked] = useState(uDislikes);
+    const [numDislikes, setNumDislikes] = useState(nDislikes);
+
     const [currComments, setCurrComments] = useState([]);
+
+    const AccordionSummary = styled((props) => (
+        <MuiAccordionSummary
+            expandIcon={<ExpandMoreIcon sx={{ fontSize: "0.9rem" }} />}
+            {...props}
+        />
+    ))(({ theme }) => ({
+        flexDirection: "row-reverse",
+        "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+            transform: "rotate(-90deg)",
+        },
+        "& .MuiAccordionSummary-content": {
+            marginLeft: theme.spacing(1),
+        },
+    }));
 
     function buildCommTree(parent) {
         for (let i = 0; i < comments.length; i++) {
@@ -38,12 +56,16 @@ const CommentThread = ({ comments, margin = 0, setup = false }) => {
     const setupThreads = () => {
         for (let i = 0; i < comments.length; i++) {
             let v1 = comments[i].likes;
+            let v2 = comments[i].dislikes;
+
+            nLikes[comments[i].id] = v1.length;
+            nDislikes[comments[i].id] = v2.length;
+
             if (v1.find((e) => e.user === userId)) {
                 // the user already liked this comment
                 setLiked((lst) => [...lst, comments[i].id]);
             }
 
-            let v2 = comments[i].dislikes;
             if (v2.find((e) => e.user === userId)) {
                 // the user already disliked this comment
                 setDisliked((lst) => [...lst, comments[i].id]);
@@ -51,6 +73,9 @@ const CommentThread = ({ comments, margin = 0, setup = false }) => {
 
             comments[i].responses = [];
         }
+
+        setNumLikes(nLikes);
+        setNumDislikes(nDislikes);
 
         const parents = comments.filter((c) => c.parent === null);
         const threadedList = parents;
@@ -70,86 +95,57 @@ const CommentThread = ({ comments, margin = 0, setup = false }) => {
         }
     }, []);
 
-    const likeComm = () => {};
+    const styleOuter = {
+        border: "none",
+        boxShadow: "none",
+        marginLeft: MARGIN,
+        marginTop: "1rem",
+    };
 
-    const dislikeComm = () => {};
-
-    const removeLike = () => {};
-
-    const removeDislike = () => {};
-
-    const addComment = () => {};
-
-    const delComment = () => {};
+    const styleInner = {
+        boxShadow: "none",
+        marginLeft: MARGIN,
+    };
     return (
         <div>
-            {currComments.map((comment, i) => (
-                <div style={{ paddingLeft: MARGIN, paddingTop: 10 }}>
-                    <Card
-                        className="comment"
-                        key={"comment-" + comment.id}>
-                        <CardHeader
-                            align="left"
-                            avatar={
-                                <Avatar sx={{ color: "deepOrange" }}>
-                                    {comment.user.username[0].toUpperCase()}
-                                </Avatar>
-                            }
-                            title={comment.user.username}
-                            action={
-                                comment.user.id === userId && (
-                                    <IconButton onClick={() => delComment(i)}>
-                                        <DeleteOutlineIcon />
-                                    </IconButton>
-                                )
-                            }
-                        />
-                        <CardContent align="left">
-                            {comment.text !== undefined && comment.text}
-                        </CardContent>
-                        <CardActions>
-                            <div>
-                                {!liked.includes(comment.id) && (
-                                    <IconButton onClick={() => likeComm(i)}>
-                                        <ThumbUpAltIcon />
-                                    </IconButton>
-                                )}
-                                {liked.includes(comment.id) && (
-                                    <IconButton onClick={() => removeLike(i)}>
-                                        <ThumbUpAltIcon color="primary" />
-                                    </IconButton>
-                                )}
-                                {comment.likes.length}
+            {currComments.length > 0 && (
+                <Accordion style={setup ? styleOuter : styleInner}>
+                    <AccordionSummary style={{ fontSize: "0.9rem" }}>
+                        {currComments.length}{" "}
+                        {currComments.length === 1 ? "Reply" : "Replies"}
+                    </AccordionSummary>
+                    {currComments.map((comment, i) => (
+                        <div>
+                            <Comment
+                                comment={comment}
+                                liked={liked}
+                                setLiked={setLiked}
+                                numLikes={numLikes}
+                                setNumLikes={setNumLikes}
+                                disliked={disliked}
+                                setDisliked={setDisliked}
+                                numDislikes={numDislikes}
+                                setNumDislikes={setNumDislikes}
+                                comments={currComments}
+                                setCurrComments={setCurrComments}
+                            />
 
-                                {!disliked.includes(comment.id) && (
-                                    <IconButton onClick={() => dislikeComm(i)}>
-                                        <ThumbDownAltIcon />
-                                    </IconButton>
+                            {comment !== undefined &&
+                                comment.responses.length > 0 && (
+                                    <CommentThread
+                                        key={"c-thread-" + comment.id}
+                                        comments={comment.responses}
+                                        uLikes={liked}
+                                        uDislikes={disliked}
+                                        nLikes={numLikes}
+                                        nDislikes={numDislikes}
+                                        margin={MARGIN}
+                                    />
                                 )}
-
-                                {disliked.includes(comment.id) && (
-                                    <IconButton
-                                        onClick={() => removeDislike(i)}>
-                                        <ThumbDownAltIcon color="primary" />
-                                    </IconButton>
-                                )}
-                                {comment.dislikes.length}
-                            </div>
-
-                            <IconButton onClick={() => addComment(i)}>
-                                <ReplyIcon />
-                            </IconButton>
-                        </CardActions>
-                    </Card>
-                    {comment !== undefined && comment.responses.length > 0 && (
-                        <CommentThread
-                            key={"thread-" + comment.id}
-                            comments={comment.responses}
-                            margin={MARGIN}
-                        />
-                    )}
-                </div>
-            ))}
+                        </div>
+                    ))}
+                </Accordion>
+            )}
         </div>
     );
 };

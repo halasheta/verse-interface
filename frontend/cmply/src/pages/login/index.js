@@ -10,7 +10,8 @@ const Login = () => {
     const [username1, setUsername1] = useState("");
     const [password, setPassword] = useState("");
 
-    const { setUsername, setUserId } = useContext(UserAPIContext);
+    const { setUsername, setUserId, setIsSuperUser } =
+        useContext(UserAPIContext);
 
     const [valid, setValid] = useState(false);
     const [submitted, setSubmitted] = useState(false);
@@ -29,6 +30,7 @@ const Login = () => {
             .then((data) => {
                 setUsername(data.username);
                 setUserId(data.id);
+                setIsSuperUser(data.is_superuser);
                 navigate("/");
             })
             .catch((err) => console.log(err));

@@ -17,42 +17,49 @@ import SingleVerse from "./pages/singleVerse";
 import UserAPIContext, { useUserAPIContext } from "./contexts/UserAPIContext";
 import UserProfile from "./pages/profile";
 import WelcomePage from "./pages/home";
+import LoadingContext, { useLoadingContext } from "./contexts/LoadingContext";
+import NavBar from "./components/NavBar";
 
 function App() {
     return (
         <UserAPIContext.Provider value={useUserAPIContext()}>
             <ChaptersAPIContext.Provider value={useChaptersAPIContext()}>
                 <VersesAPIContext.Provider value={useVersesAPIContext()}>
-                    <div className="App">
-                        <BrowserRouter>
-                            <Routes>
-                                <Route path="/signup/" element={<SignUp />} />
-                                <Route path="/login/" element={<Login />} />
-                                <Route path="/" element={<Layout />}>
+                    <LoadingContext.Provider value={useLoadingContext()}>
+                        <div className="App">
+                            <BrowserRouter>
+                                <Routes>
                                     <Route
-                                        path=""
-                                        element={<WelcomePage />}
+                                        path="/signup/"
+                                        element={<SignUp />}
                                     />
-                                    <Route
-                                        path="quran/"
-                                        element={<Chapters />}
-                                    />
-                                    <Route
-                                        path="quran/:num/"
-                                        element={<Verses />}
-                                    />
-                                    <Route
-                                        path="quran/verse/:num/"
-                                        element={<SingleVerse />}
-                                    />
-                                    <Route
-                                        path="profile/"
-                                        element={<UserProfile />}
-                                    />
-                                </Route>
-                            </Routes>
-                        </BrowserRouter>
-                    </div>
+                                    <Route path="/login/" element={<Login />} />
+                                    <Route path="/" element={<NavBar />}>
+                                        <Route
+                                            path=""
+                                            element={<WelcomePage />}
+                                        />
+                                        <Route
+                                            path="quran/"
+                                            element={<Chapters />}
+                                        />
+                                        <Route
+                                            path="quran/:num/"
+                                            element={<Verses />}
+                                        />
+                                        <Route
+                                            path="quran/verse/:num/"
+                                            element={<SingleVerse />}
+                                        />
+                                        <Route
+                                            path="profile/"
+                                            element={<UserProfile />}
+                                        />
+                                    </Route>
+                                </Routes>
+                            </BrowserRouter>
+                        </div>
+                    </LoadingContext.Provider>
                 </VersesAPIContext.Provider>
             </ChaptersAPIContext.Provider>
         </UserAPIContext.Provider>

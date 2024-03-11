@@ -12,12 +12,17 @@
     min-height: 100;
 }
 
-.verse-post {
+.post-form {
     padding: 1rem;
+    border-radius: 2rem;
 }
 
-.user-post {
-    padding: 1rem;
+
+
+.comment-form {
+    padding-top: 1rem;
+    border-radius: 2rem;
+    padding-bottom: 1rem;
 }
 
 .right-align-item {
@@ -43,4 +48,8 @@
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     opacity: 1;
+}
+
+.border-l {
+    border-left: solid 5px;
 }

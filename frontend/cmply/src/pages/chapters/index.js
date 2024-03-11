@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./chapters.css";
-import ChapterTable from "../../components/ChapterTable";
+import ChapterList from "../../components/ChapterList";
 import ChaptersAPIContext from "../../contexts/ChaptersAPIContext";
 import LoadingScreen from "../../components/LoadingScreen";
+import { Typography } from "@mui/material";
 
 const Chapters = () => {
     const { setChapters } = useContext(ChaptersAPIContext);
@@ -32,8 +33,16 @@ const Chapters = () => {
                 <LoadingScreen />
             ) : (
                 <div className="chapters">
-                    <h2>The Qur'an</h2>
-                    <ChapterTable perPage={10} page={1}></ChapterTable>
+                    <Typography
+                        variant="h3"
+                        style={{
+                            fontFamily: ["'Noto Naskh Arabic'", "serif"].join(
+                                ","
+                            ),
+                        }}>
+                        ٱلۡقُرۡءَان
+                    </Typography>
+                    <ChapterList perPage={10} page={1}></ChapterList>
                 </div>
             )}
         </div>
