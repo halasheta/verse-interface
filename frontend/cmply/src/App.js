@@ -1,6 +1,5 @@
 // import logo from './logo.svg';
 import "./App.css";
-import Layout from "./pages/nav";
 import SignUp from "./pages/signup";
 import Login from "./pages/login";
 import Chapters from "./pages/chapters";
