@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import *
 from accounts.serializers import UserSerializer
 from comments.serializers import GetCommentSerializer
+from quran.serializers import VerseSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     verses = serializers.PrimaryKeyRelatedField(allow_empty=False, many=True, read_only=True)
@@ -26,7 +27,7 @@ class PostDislikeSerializer(serializers.ModelSerializer):
 
         
 class GetPostSerializer(serializers.ModelSerializer):
-    verses = serializers.PrimaryKeyRelatedField(allow_empty=False, many=True, read_only=True)
+    verses = VerseSerializer(many=True, read_only=True)
     likes = PostLikeSerializer(many=True, read_only=True)
     dislikes = PostDislikeSerializer(many=True, read_only=True)
     user = UserSerializer(read_only=True)
